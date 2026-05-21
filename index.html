@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>PP Electronic Games</title>
+	<meta charset="utf-8">
+	<meta charset="UTF-8">
+		<meta http-equiv="content-language" content="zh-cn">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="shortcut icon" href="static/image/favicon.ico">
+		<meta name="keywords" content="爱祖国爱人民">
+		<meta name="description" content="爱祖国爱人民">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">    <link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-logo-mask"></div>
+    </div>
+
+    <nav class="top-nav">
+        <a class="nav-logo-link" href="/">
+            <img class="nav-logo" src="static/image/pp.svg" alt="Logo">
+        </a>
+        <div class="nav-links">
+            <a class="nav-link active" href="/">首页</a>
+            <a class="nav-link" href="#game-section">游戏</a>
+            <a class="nav-link" href="https://t.me/iTroll886">搭建同款</a>
+        </div>
+        <button class="nav-menu-btn" id="navMenuBtn">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </nav>
+
+    <div class="page-container">
+        <header class="header">
+            <div class="header-banner">
+                <img class="header-bg" src="static/image/Slider_BG_Desktop.png" alt="">
+                <div class="header-content">
+                    <h1 class="header-title">PP Games</h1>
+                </div>
+                <video class="header-video" src="static/image/Banner.mp4" autoplay muted loop playsinline></video>
+            </div>
+        </header>
+
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="搜索游戏..." id="searchInput">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <div class="search-clear" id="searchClear">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+        </div>
+
+        <div class="notice-banner">
+            <span class="notice-icon">🎰</span>
+            <span class="notice-text">所有游戏均为免费试玩，无需注册即可体验</span>
+        </div>
+
+        <!-- Game List -->
+        <section class="game-section" id="game-section">
+            <div class="section-header">
+                <h2 class="section-title">PP电子游戏</h2>
+                <span class="section-count">512款</span>
+            </div>
+
+            <div class="game-grid" id="gameList">
+                    <div class="loading-skeleton">
+                    <div class="skeleton-item"><div class="skeleton-img"></div><div class="skeleton-title"></div></div>
+                    <div class="skeleton-item"><div class="skeleton-img"></div><div class="skeleton-title"></div></div>
+                    <div class="skeleton-item"><div class="skeleton-img"></div><div class="skeleton-title"></div></div>
+                    <div class="skeleton-item"><div class="skeleton-img"></div><div class="skeleton-title"></div></div>
+                    <div class="skeleton-item"><div class="skeleton-img"></div><div class="skeleton-title"></div></div>
+                    <div class="skeleton-item"><div class="skeleton-img"></div><div class="skeleton-title"></div></div>
+                    <div class="skeleton-item"><div class="skeleton-img"></div><div class="skeleton-title"></div></div>
+                    <div class="skeleton-item"><div class="skeleton-img"></div><div class="skeleton-title"></div></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="site-footer">
+        <img src="static/image/pp.svg" alt="PP Electronic Games" class="footer-logo">
+        <div class="footer-badges">
+            <img src="static/image/18footer-red.png" alt="18+" class="footer-badge">
+            <img src="static/image/gamecheck.svg" alt="GameCheck" class="footer-badge">
+            <img src="static/image/begambleawareorg_white_png.png" alt="BeGambleAware" class="footer-badge">
+        </div>
+        <p class="footer-copy">&copy; 2015 - 2026 PP Electronic Games. All Rights Reserved.</p>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" aria-label="回到顶部">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script src="static/js/api.js"></script>
+    <script src="static/js/index.js"></script>
+    <script>
+    (function() {
+        var gamesData = [];
+        
+        function fetchGames() {
+            GameAPI.getGameList(1, 0, '').then(function(res) {
+                if (res.code === 200 && res.data && res.data.data) {
+                    gamesData = res.data.data;
+                    renderGames(gamesData);
+                } else {
+                    showError('加载游戏列表失败');
+                }
+            }).catch(function() {
+                showError('网络错误，请刷新重试');
+            });
+        }
+        
+        function renderGames(games) {
+            var container = document.getElementById('gameList');
+            if (!games || games.length === 0) {
+                container.innerHTML = '<div class="empty-state">暂无游戏</div>';
+                return;
+            }
+            var html = '';
+            games.forEach(function(game) {
+                var img = game.image || game.img || game.thumb || '';
+                var name = game.name || game.title || '游戏';
+                var id = game.id || game.game_id || '';
+                var url = game.url || 'PPSoft.php?id=' + id + '&platform=' + (game.platform || 'pp');
+                html += '<a href="' + url + '" class="game-card">';
+                html += '<div class="game-thumb"><img src="' + img + '" alt="' + name + '" loading="lazy"></div>';
+                html += '<span class="game-name">' + name + '</span>';
+                html += '</a>';
+            });
+            container.innerHTML = html;
+        }
+        
+        function showError(msg) {
+            document.getElementById('gameList').innerHTML = '<div class="error-state">' + msg + '</div>';
+        }
+        
+        window.filterGames = function() {
+            var keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!keyword) {
+                renderGames(gamesData);
+                return;
+            }
+            var filtered = gamesData.filter(function(game) {
+                var name = (game.name || game.title || '').toLowerCase();
+                return name.indexOf(keyword) !== -1;
+            });
+            renderGames(filtered);
+        };
+        
+        fetchGames();
+    })();
+    </script>
+</body>
+</html>
